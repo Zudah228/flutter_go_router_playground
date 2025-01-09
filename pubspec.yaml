@@ -1,0 +1,69 @@
+name: flutter_go_router_playground
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.5.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # DI
+  riverpod: ^2.6.1
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.6.1
+
+  # Router
+  go_router: ^14.6.1
+
+  # Local DB
+  shared_preferences: ^2.3.3
+
+  # Extend Dart
+  freezed_annotation: ^2.4.4
+  uuid: ^4.5.1
+  collection: ^1.18.0
+  meta: ^1.15.0
+
+  # UI
+  shared_preferences_explorer: ^0.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  
+  # Liner
+  flutter_lints: ^4.0.0
+  custom_lint: ^0.7.0
+  riverpod_lint: ^2.6.1
+
+  # Build Runner
+  build_runner: ^2.4.13
+  go_router_builder: ^2.7.1
+  riverpod_generator: ^2.6.1
+  freezed: ^2.5.7
+  json_serializable: ^6.9.0
+
+  # Icon
+  flutter_launcher_icons: ^0.14.2
+
+flutter:
+  uses-material-design: true
+
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
+  min_sdk_android: 21
+  web:
+    generate: true
+    image_path: "assets/icon/icon.png"
+  windows:
+    generate: true
+    image_path: "assets/icon/icon.png"
+  macos:
+    generate: true
+    image_path: "assets/icon/icon.png"

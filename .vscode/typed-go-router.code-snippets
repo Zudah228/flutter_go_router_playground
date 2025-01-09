@@ -1,0 +1,17 @@
+{
+  "Snippets: Typed GoRoute": {
+    "prefix": ["typedgoroute", "goroute"],
+    "scope": "dart",
+    "body": [
+      "@TypedGoRoute<${1/(.*)/${1:/pascalcase}/}Route>(path: '/${1/([A-Z][a-z]+$)|((^|[A-Z])[a-z]+)/${1:/downcase}${2:/downcase}${2:+_}/g}')",
+      "class ${1/(.*)/${1:/pascalcase}/}Route extends GoRouteData {",
+      "  const ${1/(.*)/${1:/pascalcase}/}Route();",
+      "",
+      "  @override",
+      "  Widget build(BuildContext context, GoRouterState state) {",
+      "    return const ${1/(.*)/${1:/pascalcase}/}Page();$0",
+      "  }",
+      "}"
+    ]
+  }
+}

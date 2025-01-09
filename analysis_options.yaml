@@ -1,0 +1,10 @@
+include: package:flutter_lints/flutter.yaml
+analyzer:
+  plugins:
+    - custom_lint
+ 
+linter:
+  rules:
+    # import
+    prefer_relative_imports: true
+    always_use_package_imports: false

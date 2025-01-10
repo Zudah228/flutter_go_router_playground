@@ -6,6 +6,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../app/auth/providers/current_user.dart';
 import '../../app/error/error_page.dart';
 import '../../repository/initial_path/initial_path_repository.dart';
+import 'observers/log_observer.dart';
 import 'routes.dart';
 
 part 'router.g.dart';
@@ -22,6 +23,10 @@ RouterConfig<Object> router(Ref ref) {
     initialLocation: loadingLocation,
     routes: $appRoutes,
     navigatorKey: rootNavigatorKey,
+    observers: [
+      LogNavigationObserver(),
+    ],
+    
     redirect: (context, state) {
       final path = state.uri.toString();
 

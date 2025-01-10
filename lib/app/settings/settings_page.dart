@@ -28,6 +28,13 @@ class SettingsPage extends StatelessWidget {
               const SettingsSharedPreferencesRoute().push(context);
             },
           ),
+          ListTile(
+            leading: const Icon(Icons.catching_pokemon),
+            title: const Text('Pikachu'),
+            onTap: () {
+              const PokemonDetailsRoute('pikachu').push(context);
+            },
+          ),
           const LogoutListTile(),
         ],
       ),

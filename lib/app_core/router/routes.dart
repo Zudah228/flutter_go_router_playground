@@ -14,6 +14,8 @@ import '../../app/note/note_list_page.dart';
 import '../../app/number_picker/number_picker_page.dart';
 import '../../app/on_exit/on_exit_page.dart';
 import '../../app/on_exit/providers/on_exit_handler.dart';
+import '../../app/pokemon/pokemon_page.dart';
+import '../../app/pokemon_details/pokemon_details_page.dart';
 import '../../app/pop_scope/pop_scope_page.dart';
 import '../../app/settings/settings_page.dart';
 import '../../app/settings_path/settings_path_page.dart';
@@ -58,6 +60,12 @@ class LoginRoute extends GoRouteData {
       path: '/note',
       routes: [
         TypedGoRoute<NoteEditRoute>(path: 'edit/:id'),
+      ],
+    ),
+    TypedGoRoute<PokemonRoute>(
+      path: '/pokemon',
+      routes: [
+        TypedGoRoute<PokemonDetailsRoute>(path: ':id'),
       ],
     ),
   ],
@@ -139,6 +147,36 @@ class NoteEditRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return NoteEditPage(id);
+  }
+}
+
+// Pokemon
+class PokemonRoute extends GoRouteData {
+  const PokemonRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return const NoTransitionPage(
+      child: PokemonPage(),
+    );
+  }
+}
+
+class PokemonDetailsRoute extends GoRouteData {
+  const PokemonDetailsRoute(this.id);
+
+  final String id;
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return MaterialPage(
+      child: PokemonDetailsPage(id),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return PokemonDetailsPage(id);
   }
 }
 

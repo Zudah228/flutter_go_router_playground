@@ -9,6 +9,7 @@ import 'components/home_page_navigation_bar.dart';
 enum HomeShellType {
   home,
   note,
+  pokemon,
   ;
 }
 
@@ -40,6 +41,8 @@ class HomeShell extends StatelessWidget {
         const HomeRoute().go(context);
       case 1:
         const NoteListRoute().go(context);
+      case 2:
+        const PokemonRoute().go(context);
     }
   }
 
@@ -49,7 +52,10 @@ class HomeShell extends StatelessWidget {
     if (location.startsWith(const HomeRoute().location)) {
       return 0;
     }
-    return 1;
+    if (location.startsWith(const NoteListRoute().location)) {
+      return 1;
+    }
+    return 2;
   }
 
   static HomeShellType currentType(BuildContext context) {

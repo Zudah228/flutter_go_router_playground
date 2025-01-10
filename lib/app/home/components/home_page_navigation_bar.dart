@@ -21,6 +21,11 @@ class HomePageNavigationBar extends StatelessWidget {
               icon: Icon(Icons.note),
               label: 'note',
             );
+          case HomeShellType.pokemon:
+            return const NavigationDestination(
+              icon: Icon(Icons.catching_pokemon),
+              label: 'poke',
+            );
         }
       }).toList(),
       selectedIndex: HomeShell.currentIndex(context),

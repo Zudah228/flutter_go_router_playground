@@ -23,6 +23,8 @@ class _Title extends StatelessWidget {
         title = 'Home';
       case HomeShellType.note:
         title = 'Note';
+      case HomeShellType.pokemon:
+        title = 'Poke';
     }
 
     return Text(title);

@@ -80,6 +80,16 @@ RouteBase get $homeShellRoute => ShellRouteData.$route(
             ),
           ],
         ),
+        GoRouteData.$route(
+          path: '/pokemon',
+          factory: $PokemonRouteExtension._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: ':id',
+              factory: $PokemonDetailsRouteExtension._fromState,
+            ),
+          ],
+        ),
       ],
     );
 
@@ -129,6 +139,43 @@ extension $NoteEditRouteExtension on NoteEditRoute {
 
   String get location => GoRouteData.$location(
         '/note/edit/${Uri.encodeComponent(id)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $PokemonRouteExtension on PokemonRoute {
+  static PokemonRoute _fromState(GoRouterState state) => const PokemonRoute();
+
+  String get location => GoRouteData.$location(
+        '/pokemon',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $PokemonDetailsRouteExtension on PokemonDetailsRoute {
+  static PokemonDetailsRoute _fromState(GoRouterState state) =>
+      PokemonDetailsRoute(
+        state.pathParameters['id']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/pokemon/${Uri.encodeComponent(id)}',
       );
 
   void go(BuildContext context) => context.go(location);

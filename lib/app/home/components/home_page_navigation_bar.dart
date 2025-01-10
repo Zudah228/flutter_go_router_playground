@@ -8,10 +8,21 @@ class HomePageNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NavigationBar(
-      destinations: const [
-        NavigationDestination(icon: Icon(Icons.home), label: 'home'),
-        NavigationDestination(icon: Icon(Icons.note), label: 'note'),
-      ],
+      destinations: HomeShellType.values.map((type) {
+        switch (type) {
+          case HomeShellType.home:
+            return const NavigationDestination(
+              icon: Icon(Icons.home),
+              label: 'home',
+            );
+
+          case HomeShellType.note:
+            return const NavigationDestination(
+              icon: Icon(Icons.note),
+              label: 'note',
+            );
+        }
+      }).toList(),
       selectedIndex: HomeShell.currentIndex(context),
       onDestinationSelected: (value) {
         HomeShell.go(value);

@@ -1,53 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../home_shell.dart';
+import '../providers/current_home_shell_provider.dart';
 
 class HomePageAppBar extends AppBar {
   HomePageAppBar({super.key})
       : super(
           title: const _Title(),
-          leading: const _Leading(),
         );
 }
 
-class _Title extends StatelessWidget {
+class _Title extends ConsumerWidget {
   const _Title();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final String title;
 
-    switch (HomeShell.currentType(context)) {
-      case HomeShellType.home:
+    switch (ref.watch(currentHomeShellProvider)) {
+      case HomeTab.home:
         title = 'Home';
-      case HomeShellType.note:
+      case HomeTab.note:
         title = 'Note';
-      case HomeShellType.pokemon:
+      case HomeTab.pokemon:
         title = 'Poke';
     }
 
     return Text(title);
-  }
-}
-
-class _Leading extends StatelessWidget {
-  const _Leading();
-
-  @override
-  Widget build(BuildContext context) {
-    final location = GoRouterState.of(context).uri.path;
-
-    if (location.split('/').length > 2) {
-      return BackButton(
-        onPressed: () {
-          HomeShell.pop();
-        },
-      );
-    }
-
-    if (Scaffold.hasDrawer(context)) return const DrawerButton();
-
-    return const SizedBox.shrink();
   }
 }

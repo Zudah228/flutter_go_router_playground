@@ -6,15 +6,12 @@ import 'package:go_router/go_router.dart';
 
 import '../../app/auth/auth_loading_page.dart';
 import '../../app/auth/login_page.dart';
-import '../../app/home/home_page.dart';
 import '../../app/home/home_shell.dart';
 import '../../app/logo_viewer/logo_viewer_page.dart';
 import '../../app/note/note_edit_page.dart';
-import '../../app/note/note_list_page.dart';
 import '../../app/number_picker/number_picker_page.dart';
 import '../../app/on_exit/on_exit_page.dart';
 import '../../app/on_exit/providers/on_exit_handler.dart';
-import '../../app/pokemon/pokemon_page.dart';
 import '../../app/pokemon_details/pokemon_details_page.dart';
 import '../../app/pop_scope/pop_scope_page.dart';
 import '../../app/settings/settings_page.dart';
@@ -51,44 +48,42 @@ class LoginRoute extends GoRouteData {
   }
 }
 
-@TypedShellRoute<HomeShellRoute>(
+@TypedGoRoute<HomeRoute>(
+  path: '/',
   routes: [
-    TypedGoRoute<HomeRoute>(
-      path: '/home',
-    ),
-    TypedGoRoute<NoteListRoute>(
-      path: '/note',
-      routes: [
-        TypedGoRoute<NoteEditRoute>(path: 'edit/:id'),
-      ],
-    ),
-    TypedGoRoute<PokemonRoute>(
-      path: '/pokemon',
-      routes: [
-        TypedGoRoute<PokemonDetailsRoute>(path: ':id'),
-      ],
-    ),
+    TypedGoRoute<NoteEditRoute>(path: 'note/edit/:id'),
+    TypedGoRoute<PokemonDetailsRoute>(path: 'pokemon/:id')
   ],
 )
-
-// Home
-class HomeShellRoute extends ShellRouteData {
-  const HomeShellRoute();
-
-  @override
-  Widget builder(BuildContext context, GoRouterState state, Widget navigator) {
-    return HomeShell(child: navigator);
-  }
-
-  static final GlobalKey<NavigatorState> $navigatorKey = HomeShell.navigatorKey;
-}
-
 class HomeRoute extends GoRouteData {
-  const HomeRoute();
+  const HomeRoute({this.tab});
+
+  final HomeTab? tab;
+
+  HomeTab? _getInitialTab(GoRouterState state) {
+    if (tab != null) {
+      return tab;
+    }
+
+    final location = state.uri.path;
+    
+    if (location.startsWith('/pokemon')) {
+      return HomeTab.pokemon;
+    }
+    if (location.startsWith('/note')) {
+      return HomeTab.note;
+    }
+
+    return null;
+  }
 
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return const NoTransitionPage(child: HomePage());
+    return NoTransitionPage(
+      child: HomeShell(
+        initialTab: _getInitialTab(state),
+      ),
+    );
   }
 }
 
@@ -129,16 +124,6 @@ class SettingsPathRoute extends GoRouteData {
   }
 }
 
-// Note
-class NoteListRoute extends GoRouteData {
-  const NoteListRoute();
-
-  @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return const NoTransitionPage(child: NoteListPage());
-  }
-}
-
 class NoteEditRoute extends GoRouteData {
   const NoteEditRoute(this.id);
 
@@ -147,18 +132,6 @@ class NoteEditRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return NoteEditPage(id);
-  }
-}
-
-// Pokemon
-class PokemonRoute extends GoRouteData {
-  const PokemonRoute();
-
-  @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return const NoTransitionPage(
-      child: PokemonPage(),
-    );
   }
 }
 

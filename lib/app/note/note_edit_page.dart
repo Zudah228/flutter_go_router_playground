@@ -22,6 +22,7 @@ class NoteEditPage extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
+            const SizedBox(height: 8),
             Text(id),
             const SizedBox(height: 16),
             TextFormField(
@@ -39,7 +40,7 @@ class NoteEditPage extends ConsumerWidget {
     }
 
     return Scaffold(
-      primary: false,
+      appBar: AppBar(title: const Text('ノート編集')),
       body: body,
     );
   }

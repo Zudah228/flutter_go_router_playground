@@ -4,6 +4,7 @@ import 'package:http/http.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import 'exception/poke_api_exception.dart';
 import 'model/pokemon.dart';
 
 part 'poke_api_service.g.dart';
@@ -27,9 +28,15 @@ class PokeApiService {
       ),
     );
 
-    final data = (jsonDecode(response.body) as Map<String, dynamic>);
+    if (response.statusCode == 404) {
+      throw NotFoundPokeException(id: id);
+    }
 
-    print(data['types']);
+    if (!(response.statusCode >= 200 && response.statusCode < 300)) {
+      throw PokeApiException();
+    }
+
+    final data = (jsonDecode(response.body) as Map<String, dynamic>);
 
     return Pokemon.fromJson(data);
   }

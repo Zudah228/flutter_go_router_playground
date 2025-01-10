@@ -12,7 +12,7 @@ class PokemonPage extends StatelessWidget {
       body: Center(
         child: TextButton(
           onPressed: () {
-            const PokemonDetailsRoute('500').push(context);
+            const PokemonDetailsRoute('400').push(context);
           },
           child: const Text('PokemonPage'),
         ),

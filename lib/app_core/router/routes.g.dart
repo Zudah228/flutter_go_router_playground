@@ -9,7 +9,7 @@ part of 'routes.dart';
 List<RouteBase> get $appRoutes => [
       $authLoadingRoute,
       $loginRoute,
-      $homeShellRoute,
+      $homeRoute,
       $settingsRoute,
       $numberPickerRoute,
       $logoViewerRoute,
@@ -62,47 +62,32 @@ extension $LoginRouteExtension on LoginRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $homeShellRoute => ShellRouteData.$route(
-      navigatorKey: HomeShellRoute.$navigatorKey,
-      factory: $HomeShellRouteExtension._fromState,
+RouteBase get $homeRoute => GoRouteData.$route(
+      path: '/',
+      factory: $HomeRouteExtension._fromState,
       routes: [
         GoRouteData.$route(
-          path: '/home',
-          factory: $HomeRouteExtension._fromState,
+          path: 'note/edit/:id',
+          factory: $NoteEditRouteExtension._fromState,
         ),
         GoRouteData.$route(
-          path: '/note',
-          factory: $NoteListRouteExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: 'edit/:id',
-              factory: $NoteEditRouteExtension._fromState,
-            ),
-          ],
-        ),
-        GoRouteData.$route(
-          path: '/pokemon',
-          factory: $PokemonRouteExtension._fromState,
-          routes: [
-            GoRouteData.$route(
-              path: ':id',
-              factory: $PokemonDetailsRouteExtension._fromState,
-            ),
-          ],
+          path: 'pokemon/:id',
+          factory: $PokemonDetailsRouteExtension._fromState,
         ),
       ],
     );
 
-extension $HomeShellRouteExtension on HomeShellRoute {
-  static HomeShellRoute _fromState(GoRouterState state) =>
-      const HomeShellRoute();
-}
-
 extension $HomeRouteExtension on HomeRoute {
-  static HomeRoute _fromState(GoRouterState state) => const HomeRoute();
+  static HomeRoute _fromState(GoRouterState state) => HomeRoute(
+        tab: _$convertMapValue(
+            'tab', state.uri.queryParameters, _$HomeTabEnumMap._$fromName),
+      );
 
   String get location => GoRouteData.$location(
-        '/home',
+        '/',
+        queryParams: {
+          if (tab != null) 'tab': _$HomeTabEnumMap[tab!],
+        },
       );
 
   void go(BuildContext context) => context.go(location);
@@ -115,22 +100,11 @@ extension $HomeRouteExtension on HomeRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $NoteListRouteExtension on NoteListRoute {
-  static NoteListRoute _fromState(GoRouterState state) => const NoteListRoute();
-
-  String get location => GoRouteData.$location(
-        '/note',
-      );
-
-  void go(BuildContext context) => context.go(location);
-
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  void replace(BuildContext context) => context.replace(location);
-}
+const _$HomeTabEnumMap = {
+  HomeTab.home: 'home',
+  HomeTab.note: 'note',
+  HomeTab.pokemon: 'pokemon',
+};
 
 extension $NoteEditRouteExtension on NoteEditRoute {
   static NoteEditRoute _fromState(GoRouterState state) => NoteEditRoute(
@@ -139,23 +113,6 @@ extension $NoteEditRouteExtension on NoteEditRoute {
 
   String get location => GoRouteData.$location(
         '/note/edit/${Uri.encodeComponent(id)}',
-      );
-
-  void go(BuildContext context) => context.go(location);
-
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  void replace(BuildContext context) => context.replace(location);
-}
-
-extension $PokemonRouteExtension on PokemonRoute {
-  static PokemonRoute _fromState(GoRouterState state) => const PokemonRoute();
-
-  String get location => GoRouteData.$location(
-        '/pokemon',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -186,6 +143,20 @@ extension $PokemonDetailsRouteExtension on PokemonDetailsRoute {
       context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
+}
+
+T? _$convertMapValue<T>(
+  String key,
+  Map<String, String> map,
+  T Function(String) converter,
+) {
+  final value = map[key];
+  return value == null ? null : converter(value);
+}
+
+extension<T extends Enum> on Map<T, String> {
+  T _$fromName(String value) =>
+      entries.singleWhere((element) => element.value == value).key;
 }
 
 RouteBase get $settingsRoute => GoRouteData.$route(

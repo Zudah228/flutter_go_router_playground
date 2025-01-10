@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../app_core/router/routes.dart';
+import '../note/note_list_page.dart';
+import '../pokemon/pokemon_page.dart';
 import 'components/home_page_app_bar.dart';
 import 'components/home_page_drawer.dart';
 import 'components/home_page_navigation_bar.dart';
+import 'home_page.dart';
+import 'providers/current_home_shell_provider.dart';
 
-enum HomeShellType {
+enum HomeTab {
   home,
   note,
   pokemon,
@@ -14,51 +17,36 @@ enum HomeShellType {
 }
 
 class HomeShell extends StatelessWidget {
-  const HomeShell({super.key, required this.child});
+  const HomeShell({this.initialTab, super.key});
 
-  final Widget child;
+  final HomeTab? initialTab;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: HomePageAppBar(),
-      drawer: const HomePageDrawer(),
-      bottomNavigationBar: const HomePageNavigationBar(),
-      body: child,
+    return ProviderScope(
+      overrides: [
+        currentHomeShellProvider.overrideWith((_) => initialTab ?? HomeTab.home)
+      ],
+      child: Consumer(
+        builder: (context, ref, _) {
+          return Scaffold(
+            appBar: HomePageAppBar(),
+            drawer: const HomePageDrawer(),
+            bottomNavigationBar: const HomePageNavigationBar(),
+            body: IndexedStack(
+              index:
+                  HomeTab.values.indexOf(ref.watch(currentHomeShellProvider)),
+              children: HomeTab.values.map((shellType) {
+                return switch (shellType) {
+                  HomeTab.home => const HomePage(),
+                  HomeTab.note => const NoteListPage(),
+                  HomeTab.pokemon => const PokemonPage(),
+                };
+              }).toList(),
+            ),
+          );
+        },
+      ),
     );
-  }
-
-  static final navigatorKey = GlobalKey<NavigatorState>();
-
-  static void pop() {
-    HomeShell.navigatorKey.currentState!.pop();
-  }
-
-  static void go(int index) {
-    final context = navigatorKey.currentContext!;
-    switch (index) {
-      case 0:
-        const HomeRoute().go(context);
-      case 1:
-        const NoteListRoute().go(context);
-      case 2:
-        const PokemonRoute().go(context);
-    }
-  }
-
-  static int currentIndex(BuildContext context) {
-    final String location = GoRouterState.of(context).uri.path;
-
-    if (location.startsWith(const HomeRoute().location)) {
-      return 0;
-    }
-    if (location.startsWith(const NoteListRoute().location)) {
-      return 1;
-    }
-    return 2;
-  }
-
-  static HomeShellType currentType(BuildContext context) {
-    return HomeShellType.values[currentIndex(context)];
   }
 }

@@ -1,36 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../home_shell.dart';
+import '../providers/current_home_shell_provider.dart';
 
-class HomePageNavigationBar extends StatelessWidget {
+class HomePageNavigationBar extends ConsumerStatefulWidget {
   const HomePageNavigationBar({super.key});
 
   @override
+  ConsumerState<HomePageNavigationBar> createState() =>
+      _HomePageNavigationBarState();
+}
+
+class _HomePageNavigationBarState extends ConsumerState<HomePageNavigationBar> {
+  @override
   Widget build(BuildContext context) {
+    final shellType = ref.watch(currentHomeShellProvider);
+
     return NavigationBar(
-      destinations: HomeShellType.values.map((type) {
+      destinations: HomeTab.values.map((type) {
         switch (type) {
-          case HomeShellType.home:
+          case HomeTab.home:
             return const NavigationDestination(
               icon: Icon(Icons.home),
               label: 'home',
             );
 
-          case HomeShellType.note:
+          case HomeTab.note:
             return const NavigationDestination(
               icon: Icon(Icons.note),
               label: 'note',
             );
-          case HomeShellType.pokemon:
+          case HomeTab.pokemon:
             return const NavigationDestination(
               icon: Icon(Icons.catching_pokemon),
               label: 'poke',
             );
         }
       }).toList(),
-      selectedIndex: HomeShell.currentIndex(context),
-      onDestinationSelected: (value) {
-        HomeShell.go(value);
+      selectedIndex: HomeTab.values.indexOf(shellType),
+      onDestinationSelected: (index) {
+        ref.read(currentHomeShellProvider.notifier).state =
+            HomeTab.values[index];
       },
     );
   }

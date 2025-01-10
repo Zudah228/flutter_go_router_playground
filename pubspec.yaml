@@ -15,23 +15,26 @@ dependencies:
   flutter_riverpod: ^2.6.1
   riverpod_annotation: ^2.6.1
 
-  # Router
-  go_router: ^14.6.1
-
-  # Http
-  http: ^1.2.2
-
-  # Local DB
-  shared_preferences: ^2.3.3
-
   # Extend Dart
   freezed_annotation: ^2.4.4
   uuid: ^4.5.1
   collection: ^1.18.0
   meta: ^1.15.0
+  rxdart: ^0.28.0
+
+  # Router
+  go_router: ^14.6.1
 
   # UI
   shared_preferences_explorer: ^0.1.0
+
+  # Native
+  app_links: ^6.3.3
+
+  ## Http
+  http: ^1.2.2
+  ## Local DB
+  shared_preferences: ^2.3.3
 
 dev_dependencies:
   flutter_test:

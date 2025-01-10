@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../app/auth/providers/current_user.dart';
 import '../../app/error/error_page.dart';
-import '../../repository/initial_path/initial_path_repository.dart';
+import '../../domain/path/initial_path.dart';
 import 'observers/log_observer.dart';
 import 'routes.dart';
 
@@ -14,7 +14,7 @@ part 'router.g.dart';
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
 @riverpod
-RouterConfig<Object> router(Ref ref) {
+GoRouter router(Ref ref) {
   final currentUser = ref.watch(currentUserNotifierProvider);
 
   final loadingLocation = const AuthLoadingRoute().location;
@@ -26,8 +26,7 @@ RouterConfig<Object> router(Ref ref) {
     observers: [
       LogNavigationObserver(),
     ],
-    
-    redirect: (context, state) {
+    redirect: (context, state) async {
       final path = state.uri.toString();
 
       final isAuthPage = authPagePredicate(path);
@@ -36,7 +35,7 @@ RouterConfig<Object> router(Ref ref) {
       switch (currentUser) {
         case AuthenticatedUser():
           if (isAuthPage || isLoadingPage) {
-            return ref.watch(initialPathRepositoryProvider).get() ??
+            return (await ref.read(fetchInitialPathProvider)()) ??
                 const HomeRoute().location;
           }
         case UnauthenticatedUser():

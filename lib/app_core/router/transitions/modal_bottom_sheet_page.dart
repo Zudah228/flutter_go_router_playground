@@ -11,7 +11,12 @@ class ModalBottomSheetPage<T> extends Page<T> {
       settings: this,
       builder: (context) => SizedBox(
         width: double.infinity,
-        child: child,
+        child: Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.viewInsetsOf(context).bottom,
+          ),
+          child: child,
+        ),
       ),
       isScrollControlled: true,
     );

@@ -19,8 +19,17 @@ class LogNavigationObserver extends NavigatorObserver {
   }
 
   void _log(Route route) {
-    final location =
-        GoRouter.maybeOf(route.navigator!.context)?.state?.uri.path;
+    final router = GoRouter.maybeOf(route.navigator!.context);
+    if (router == null) {
+      return;
+    }
+
+    // ルートが不正な場合
+    if (router.routerDelegate.currentConfiguration.isEmpty) {
+      return;
+    }
+
+    final location = router.state?.uri.path;
 
     print(location);
   }

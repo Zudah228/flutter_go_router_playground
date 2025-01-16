@@ -5,6 +5,7 @@ import '../note/note_list_page.dart';
 import '../pokemon/pokemon_page.dart';
 import 'components/home_page_app_bar.dart';
 import 'components/home_page_drawer.dart';
+import 'components/home_page_fab.dart';
 import 'components/home_page_navigation_bar.dart';
 import 'home_page.dart';
 import 'providers/current_home_shell_provider.dart';
@@ -32,6 +33,7 @@ class HomeShell extends StatelessWidget {
           return Scaffold(
             appBar: HomePageAppBar(),
             drawer: const HomePageDrawer(),
+            floatingActionButton: const HomePageFab(),
             bottomNavigationBar: const HomePageNavigationBar(),
             body: IndexedStack(
               index:

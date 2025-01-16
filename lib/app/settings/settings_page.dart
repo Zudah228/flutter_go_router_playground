@@ -16,7 +16,7 @@ class SettingsPage extends StatelessWidget {
         children: [
           ListTile(
             leading: const Icon(Icons.location_on),
-            title: const Text('パスの設定'),
+            title: const Text('初期パスの設定'),
             onTap: () {
               const SettingsPathRoute().push(context);
             },

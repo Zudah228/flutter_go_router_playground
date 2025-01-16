@@ -6,8 +6,6 @@ class SettingsSharedPreferencesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SharedPreferencesExplorer(
-      child: SharedPreferencesExplorerScreen(),
-    );
+    return const SharedPreferencesExplorerScreen();
   }
 }

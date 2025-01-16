@@ -21,4 +21,12 @@ class NoteListNotifier extends _$NoteListNotifier {
         if (item.id == id) item.copyWith(note: note) else item
     ];
   }
+
+  void create({required String note}) {
+    state = [
+      Note(id: UuidGenerator.generate(), note: note),
+      ...state,
+    ];
+
+  }
 }

@@ -67,7 +67,15 @@ RouteBase get $homeRoute => GoRouteData.$route(
       factory: $HomeRouteExtension._fromState,
       routes: [
         GoRouteData.$route(
-          path: 'note/edit/:id',
+          path: 'note/create',
+          factory: $NoteCreateRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'note/:noteId',
+          factory: $NoteDetailsRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: 'note/:noteId/edit',
           factory: $NoteEditRouteExtension._fromState,
         ),
         GoRouteData.$route(
@@ -106,13 +114,50 @@ const _$HomeTabEnumMap = {
   HomeTab.pokemon: 'pokemon',
 };
 
-extension $NoteEditRouteExtension on NoteEditRoute {
-  static NoteEditRoute _fromState(GoRouterState state) => NoteEditRoute(
-        state.pathParameters['id']!,
+extension $NoteCreateRouteExtension on NoteCreateRoute {
+  static NoteCreateRoute _fromState(GoRouterState state) =>
+      const NoteCreateRoute();
+
+  String get location => GoRouteData.$location(
+        '/note/create',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $NoteDetailsRouteExtension on NoteDetailsRoute {
+  static NoteDetailsRoute _fromState(GoRouterState state) => NoteDetailsRoute(
+        noteId: state.pathParameters['noteId']!,
       );
 
   String get location => GoRouteData.$location(
-        '/note/edit/${Uri.encodeComponent(id)}',
+        '/note/${Uri.encodeComponent(noteId)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $NoteEditRouteExtension on NoteEditRoute {
+  static NoteEditRoute _fromState(GoRouterState state) => NoteEditRoute(
+        state.pathParameters['noteId']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/note/${Uri.encodeComponent(noteId)}/edit',
       );
 
   void go(BuildContext context) => context.go(location);

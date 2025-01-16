@@ -8,6 +8,8 @@ import '../../app/auth/auth_loading_page.dart';
 import '../../app/auth/login_page.dart';
 import '../../app/home/home_shell.dart';
 import '../../app/logo_viewer/logo_viewer_page.dart';
+import '../../app/note/note_create_page.dart';
+import '../../app/note/note_details_page.dart';
 import '../../app/note/note_edit_page.dart';
 import '../../app/number_picker/number_picker_page.dart';
 import '../../app/on_exit/on_exit_page.dart';
@@ -51,7 +53,9 @@ class LoginRoute extends GoRouteData {
 @TypedGoRoute<HomeRoute>(
   path: '/',
   routes: [
-    TypedGoRoute<NoteEditRoute>(path: 'note/edit/:id'),
+    TypedGoRoute<NoteCreateRoute>(path: 'note/create'),
+    TypedGoRoute<NoteDetailsRoute>(path: 'note/:noteId'),
+    TypedGoRoute<NoteEditRoute>(path: 'note/:noteId/edit'),
     TypedGoRoute<PokemonDetailsRoute>(path: 'pokemon/:id')
   ],
 )
@@ -66,7 +70,7 @@ class HomeRoute extends GoRouteData {
     }
 
     final location = state.uri.path;
-    
+
     if (location.startsWith('/pokemon')) {
       return HomeTab.pokemon;
     }
@@ -124,14 +128,34 @@ class SettingsPathRoute extends GoRouteData {
   }
 }
 
-class NoteEditRoute extends GoRouteData {
-  const NoteEditRoute(this.id);
+class NoteCreateRoute extends GoRouteData {
+  const NoteCreateRoute();
 
-  final String id;
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return const ModalBottomSheetPage(child: NoteCreatePage());
+  }
+}
+
+class NoteDetailsRoute extends GoRouteData {
+  const NoteDetailsRoute({required this.noteId});
+
+  final String noteId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return NoteEditPage(id);
+    return NoteDetailsPage(noteId: noteId);
+  }
+}
+
+class NoteEditRoute extends GoRouteData {
+  const NoteEditRoute(this.noteId);
+
+  final String noteId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return NoteEditPage(noteId);
   }
 }
 

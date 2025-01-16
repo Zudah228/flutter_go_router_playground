@@ -19,8 +19,14 @@ class NoteListPage extends ConsumerWidget {
         return ListTile(
           title: Text(note.note),
           subtitle: Text(note.id),
+          trailing: IconButton(
+            onPressed: () {
+              NoteEditRoute(note.id).push(context);
+            },
+            icon: const Icon(Icons.edit),
+          ),
           onTap: () {
-            NoteEditRoute(note.id).push(context);
+            NoteDetailsRoute(noteId: note.id).push(context);
           },
         );
       },

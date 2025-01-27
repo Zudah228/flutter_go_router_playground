@@ -8,14 +8,20 @@ part of 'pokemon.dart';
 
 _$PokemonImpl _$$PokemonImplFromJson(Map<String, dynamic> json) =>
     _$PokemonImpl(
-      image: PokemonImage.fromJson(json['sprites'] as Map<String, dynamic>),
       name: json['name'] as String,
+      image: PokemonImage.fromJson(json['sprites'] as Map<String, dynamic>),
+      cry: PokemonCry.fromJson(json['cries'] as Map<String, dynamic>),
+      types: (json['types'] as List<dynamic>)
+          .map((e) => PokemonTypeSlot.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$PokemonImplToJson(_$PokemonImpl instance) =>
     <String, dynamic>{
-      'sprites': instance.image,
       'name': instance.name,
+      'sprites': instance.image,
+      'cries': instance.cry,
+      'types': instance.types,
     };
 
 _$PokemonImageImpl _$$PokemonImageImplFromJson(Map<String, dynamic> json) =>

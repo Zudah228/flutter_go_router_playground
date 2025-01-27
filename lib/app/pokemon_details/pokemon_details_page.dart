@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:just_audio/just_audio.dart';
 
+import '../../app_core/ui_parts/snack_bar.dart';
 import '../../service/poke_api/exception/poke_api_exception.dart';
 import 'providers/pokemon_provider.dart';
 
@@ -22,8 +24,46 @@ class PokemonDetailsPage extends ConsumerWidget {
           return Center(
             child: Column(
               children: [
-                Image.network(data.image.front_default),
-                Image.network(data.image.back_default),
+                Image.network(
+                  data.image.front_default,
+                  height: 150,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  data.name,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'タイプ: ${data.types.map((type) => type.type.name).join(', ')}',
+                  style: const TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'サウンド: ',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.play_circle),
+                      onPressed: () async {
+                        try {
+                          final player = AudioPlayer();
+                          await player.setUrl(data.cry.latest);
+                          await player.play();
+                        } catch (e) {
+                          print('音声の再生に失敗しました: $e');
+                          showSnackBar('音声の再生に失敗しました: $e');
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ],
             ),
           );

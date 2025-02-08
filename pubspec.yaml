@@ -37,8 +37,7 @@ dependencies:
   shared_preferences: ^2.3.3
 
   # Audio
-  audioplayers: ^6.1.0
-  just_audio: ^0.9.36
+  flutter_soloud: ^3.0.0-pre.0
   video_player: ^2.2.19
 
 dev_dependencies:

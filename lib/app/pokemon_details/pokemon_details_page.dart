@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:just_audio/just_audio.dart';
 
 import '../../app_core/ui_parts/snack_bar.dart';
 import '../../service/poke_api/exception/poke_api_exception.dart';
+import '../utils/audio_player.dart';
 import 'providers/pokemon_provider.dart';
 
 class PokemonDetailsPage extends ConsumerWidget {
@@ -53,9 +53,8 @@ class PokemonDetailsPage extends ConsumerWidget {
                       icon: const Icon(Icons.play_circle),
                       onPressed: () async {
                         try {
-                          final player = AudioPlayer();
-                          await player.setUrl(data.cry.latest);
-                          await player.play();
+                          final url = data.cry.latest;
+                          await AudioPlayer().playUrl(url);
                         } catch (e) {
                           print('音声の再生に失敗しました: $e');
                           showSnackBar('音声の再生に失敗しました: $e');

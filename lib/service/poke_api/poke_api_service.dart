@@ -38,8 +38,6 @@ class PokeApiService {
 
     final data = (jsonDecode(response.body) as Map<String, dynamic>);
 
-    print(data['cries']);
-
     return Pokemon.fromJson(data);
   }
 }
